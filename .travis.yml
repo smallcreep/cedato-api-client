@@ -1,0 +1,18 @@
+language: java
+sudo: required
+script:
+- "./gradlew clean build -PQuality -PIntegration --scan --info"
+jdk:
+- oraclejdk8
+before_install:
+- chmod +x gradlew
+- mkdir -p ~/.gradle && echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+after_success:
+  - "bash <(curl -s https://codecov.io/bash)"

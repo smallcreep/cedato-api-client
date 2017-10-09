@@ -1,0 +1,115 @@
+group 'com.github.smallcreep'
+version(project.hasProperty('Ver') ? project.property('Ver') : '1.0-SNAPSHOT')
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        jcenter()
+    }
+    dependencies {
+        classpath "com.gradle:build-scan-plugin:1.8"
+    }
+}
+
+apply from: rootProject.file('gradle/basic.gradle')
+
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+}
+
+project.ext {
+    junitVersion = "4.12"
+    lombokVersion = "1.16.16"
+    jcabiAspectsVersion = "0.22.6"
+    javaxJsonVersion = "1.1"
+    jcabiManifestsVersion = "1.1"
+    jcabiHttpVersion = "1.17"
+    jsr311ApiVersion = "1.1.1"
+    hamcrestVersion = "1.3"
+    grizzlyServletWebserverVersion = "2.0.0-M3"
+    jerseyClientVersion = "1.19.4"
+    log4jVersion = "2.8.2"
+    httpclientVersion = "4.5.3"
+    equalsverifierVersion = "2.3"
+    cactoosVersion = "0.7"
+}
+
+dependencies {
+    compile "org.projectlombok:lombok:$lombokVersion"
+    compile "com.jcabi:jcabi-aspects:$jcabiAspectsVersion"
+    compile "javax.json:javax.json-api:$javaxJsonVersion"
+    compile "com.jcabi:jcabi-manifests:$jcabiManifestsVersion"
+    compile "com.jcabi:jcabi-http:$jcabiHttpVersion"
+    compile "javax.ws.rs:jsr311-api:$jsr311ApiVersion"
+    compile "org.hamcrest:hamcrest-core:$hamcrestVersion"
+    compile "org.hamcrest:hamcrest-library:$hamcrestVersion"
+    compile "org.cactoos:cactoos:$cactoosVersion"
+
+    runtime "com.sun.jersey:jersey-client:$jerseyClientVersion"
+    runtime "org.glassfish:javax.json:$javaxJsonVersion"
+
+    testCompile "junit:junit:$junitVersion"
+    testCompile "nl.jqno.equalsverifier:equalsverifier:$equalsverifierVersion"
+
+    testRuntime "com.sun.grizzly:grizzly-servlet-webserver:$grizzlyServletWebserverVersion"
+    testRuntime "org.apache.httpcomponents:httpclient:$httpclientVersion"
+
+    testRuntimeClasspath "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+    testRuntimeClasspath "org.apache.logging.log4j:log4j-core:$log4jVersion"
+}
+
+/*test {
+    systemProperties = [
+            "failsafe.hub.username": (System.getProperty('hubUsername') ? System.getProperty('hubUsername') : System.getenv("username")),
+            "failsafe.hub.password": (System.getProperty('hubPassword') ? System.getProperty('hubPassword') : System.getenv("password")),
+            "failsafe.hub.service" : (System.getProperty('hubService') ? System.getProperty('hubService') : System.getenv("service")),
+            "failsafe.hub.secret"  : (System.getProperty('hubSecret') ? System.getProperty('hubSecret') : System.getenv("secret")),
+            "failsafe.hub.uri"     : (System.getProperty('hubUri') ? System.getProperty('hubUri') : System.getenv("uri")),
+            "failsafe.hub.scopes"  : (System.getProperty('hubScopes') ? System.getProperty('hubScopes') : System.getenv("scopes"))
+    ]
+}*/
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.project {
+                packaging 'jar'
+                name 'Cedato API Client'
+                description 'Fluent Api client for Cedato API'
+                url 'https://github.com/smallcreep/cedato-api-client'
+                inceptionYear '2017'
+                licenses {
+                    license {
+                        name 'MIT'
+                        url 'https://raw.githubusercontent.com/smallcreep/cedato-api-client/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id '1'
+                        name 'Ilia Rogozhin'
+                        email 'ilia.rogozhin@gmail.com'
+                        roles {
+                            role 'Architect'
+                            role 'Developer'
+                        }
+                        timezone '+3'
+                    }
+                }
+                issueManagement {
+                    system 'GitHub'
+                    url 'https://github.com/smallcreep/cedato-api-client/issues'
+                }
+                scm {
+                    connection 'scm:git:git@github.com:smallcreep/cedato-api-client.git'
+                    developerConnection 'scm:git:git@github.com:smallcreep/cedato-api-client.git'
+                    url 'https://github.com/smallcreep/cedato-api-client'
+                }
+            }
+        }
+    }
+}

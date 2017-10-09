@@ -1,0 +1,20 @@
+docker:
+  image: yegor256/java8
+decrypt:
+  gradle.properties: "repo/gradle.properties.asc"
+  secret.gpg: "repo/secret.gpg.asc"
+install: |-
+  mv /home/r/gradle.properties /home/r/repo/gradle.properties
+  mv /home/r/secret.gpg /home/r/repo/secret.gpg
+architect:
+- smallcreep
+merge:
+  script: |
+    ./gradlew clean build -PQuality -PIntegration --scan --info
+    ./gradlew clean
+deploy:
+  script: |
+    ./gradlew clean build -PQuality -PIntegration --scan --info
+release:
+  script: |-
+    ./gradlew clean build upload -PPublish -PVer=${tag} --scan --info
