@@ -1,6 +1,7 @@
 group 'com.github.smallcreep'
 version(project.hasProperty('Ver') ? project.property('Ver') : '1.0-SNAPSHOT')
 
+
 buildscript {
     repositories {
         maven {
@@ -21,6 +22,15 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    def buildVersion = project.hasProperty('build') ? project.property('build') : '1.0-SNAPSHOT'
+    manifest {
+        attributes 'Cedato-Version': version,
+                'Cedato-Build': buildVersion,
+                'Cedato-Date': new Date()
+    }
+}
+
 project.ext {
     junitVersion = "4.12"
     lombokVersion = "1.16.16"
@@ -35,7 +45,7 @@ project.ext {
     log4jVersion = "2.8.2"
     httpclientVersion = "4.5.3"
     equalsverifierVersion = "2.3"
-    cactoosVersion = "0.7"
+    cactoosVersion = "0.20"
 }
 
 dependencies {
@@ -62,16 +72,14 @@ dependencies {
     testRuntimeClasspath "org.apache.logging.log4j:log4j-core:$log4jVersion"
 }
 
-/*test {
+test {
     systemProperties = [
-            "failsafe.hub.username": (System.getProperty('hubUsername') ? System.getProperty('hubUsername') : System.getenv("username")),
-            "failsafe.hub.password": (System.getProperty('hubPassword') ? System.getProperty('hubPassword') : System.getenv("password")),
-            "failsafe.hub.service" : (System.getProperty('hubService') ? System.getProperty('hubService') : System.getenv("service")),
-            "failsafe.hub.secret"  : (System.getProperty('hubSecret') ? System.getProperty('hubSecret') : System.getenv("secret")),
-            "failsafe.hub.uri"     : (System.getProperty('hubUri') ? System.getProperty('hubUri') : System.getenv("uri")),
-            "failsafe.hub.scopes"  : (System.getProperty('hubScopes') ? System.getProperty('hubScopes') : System.getenv("scopes"))
+            "failsafe.cedato.service": (hasProperty('cedatoService') ? getProperty('cedatoService') : System.getenv("service")),
+            "failsafe.cedato.secret" : (hasProperty('cedatoSecret') ? getProperty('cedatoSecret') : System.getenv("secret")),
+            "failsafe.cedato.supplyId": (hasProperty('cedatoSupplyId') ? getProperty('cedatoSupplyId') : System.getenv("supplyId")),
+            "failsafe.cedato.supplyName": (hasProperty('cedatoSupplyName') ? getProperty('cedatoSupplyName') : System.getenv("supplyName")),
     ]
-}*/
+}
 
 uploadArchives {
     repositories {

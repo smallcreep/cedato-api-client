@@ -1,3 +1,4 @@
 * origin=auto eol=lf
 *.java ident
 *.xml ident
+*.jar binary

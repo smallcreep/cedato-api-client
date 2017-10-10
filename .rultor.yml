@@ -1,11 +1,11 @@
 docker:
-  image: yegor256/java8
+  image: coala/rultor-python
 decrypt:
   gradle.properties: "repo/gradle.properties.asc"
-  secret.gpg: "repo/secret.gpg.asc"
+  secring.gpg: "repo/secring.gpg.asc"
 install: |-
   mv /home/r/gradle.properties /home/r/repo/gradle.properties
-  mv /home/r/secret.gpg /home/r/repo/secret.gpg
+  mv /home/r/secring.gpg /home/r/repo/secring.gpg
 architect:
 - smallcreep
 merge:
