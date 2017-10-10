@@ -1,5 +1,5 @@
 docker:
-  image: yegor256/java8
+  image: openjdk/8u131-jre-alpine
 decrypt:
   gradle.properties: "repo/gradle.properties.asc"
   secring.gpg: "repo/secring.gpg.asc"
