@@ -26,7 +26,6 @@
 package com.github.smallcreep.text;
 
 import org.cactoos.TextHasString;
-import org.cactoos.text.StringAsText;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -35,34 +34,18 @@ import org.junit.Test;
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
- * @checkstyle MethodNameCheck (500 lines)
+ * @checkstyle MethodNameCheck (100 lines)
  */
 public final class TextAsBase64Test {
 
     /**
      * Check that string correct encode to Base64.
-     * @throws Exception If fails
      */
     @Test
-    public void stringToBase64() throws Exception {
+    public void stringToBase64() {
         MatcherAssert.assertThat(
             "The string doesn't correct encode to Base64",
             new TextAsBase64("test"),
-            new TextHasString("dGVzdA==")
-        );
-    }
-
-    /**
-     * Check that text correct encode to Base64.
-     * @throws Exception If fails
-     */
-    @Test
-    public void textToBase64() throws Exception {
-        MatcherAssert.assertThat(
-            "The text doesn't correct encode to Base64",
-            new TextAsBase64(
-                new StringAsText("test")
-            ),
             new TextHasString("dGVzdA==")
         );
     }

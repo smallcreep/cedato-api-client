@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.Base64;
 import org.cactoos.Bytes;
 import org.cactoos.Text;
+import org.cactoos.text.StringAsText;
 import org.cactoos.text.TextAsBytes;
 
 /**
@@ -49,7 +50,7 @@ public final class TextAsBase64 implements Text {
      * @param string Source string
      */
     public TextAsBase64(final String string) {
-        this(new TextAsBytes(string));
+        this(new StringAsText(string));
     }
 
     /**
@@ -71,8 +72,8 @@ public final class TextAsBase64 implements Text {
     @Override
     public String asString() throws IOException {
         return Base64.getEncoder()
-            .encodeToString(
-                this.source.asBytes()
-            );
+                     .encodeToString(
+                         this.source.asBytes()
+                     );
     }
 }
