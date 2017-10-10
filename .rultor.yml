@@ -1,5 +1,5 @@
 docker:
-  image: openjdk/8u131-jre-alpine
+  image: coala/rultor-python
 decrypt:
   gradle.properties: "repo/gradle.properties.asc"
   secring.gpg: "repo/secring.gpg.asc"
