@@ -25,6 +25,7 @@
 package com.github.smallcreep.cedato;
 
 import javax.json.JsonObject;
+import org.cactoos.iterable.LengthOf;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -48,16 +49,16 @@ public final class SupplyITCase {
             System.getProperty("failsafe.cedato.service"),
             System.getProperty("failsafe.cedato.secret")
         ).cedato()
-            .reports()
-            .supplies()
-            .extended()
-            .supply(
-                Integer.parseInt(
-                    System.getProperty("failsafe.cedato.supplyId")
-                )
-            )
-            .range("1507536000", "1507539599")
-            .json();
+         .reports()
+         .supplies()
+         .extended()
+         .supply(
+             Integer.parseInt(
+                 System.getProperty("failsafe.cedato.supplyId")
+             )
+         )
+         .range("1507536000", "1507539599")
+         .json();
         MatcherAssert.assertThat(
             json.getJsonObject("data")
                 .getJsonArray("supplies")
@@ -67,5 +68,31 @@ public final class SupplyITCase {
                 System.getProperty("failsafe.cedato.supplyName")
             )
         );
+    }
+
+    /**
+     * Check supply count.
+     * @throws Exception If fails
+     * @checkstyle MagicNumberCheck (50 lines)
+     */
+    @Test
+    public void supplyCount() throws Exception {
+        final int count = new LengthOf(
+            new Auth.Simple(
+                System.getProperty("failsafe.cedato.service"),
+                System.getProperty("failsafe.cedato.secret")
+            ).cedato()
+             .reports()
+             .supplies()
+             .extended()
+             .supply(
+                 Integer.parseInt(
+                     System.getProperty("failsafe.cedato.supplyId")
+                 )
+             )
+             .range("1507536000", "1507539599")
+             .group("player_demand_hour_subid")
+        ).value();
+        System.out.println("Count supplies = " + count);
     }
 }

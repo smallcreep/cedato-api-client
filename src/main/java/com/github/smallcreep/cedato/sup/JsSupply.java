@@ -22,48 +22,31 @@
  * SOFTWARE.
  */
 
-package com.github.smallcreep.cedato;
+package com.github.smallcreep.cedato.sup;
 
-import com.jcabi.http.Request;
-import com.jcabi.http.response.JsonResponse;
-import com.jcabi.http.response.RestResponse;
-import java.io.IOException;
-import java.net.HttpURLConnection;
+import com.github.smallcreep.cedato.Supply;
 import javax.json.JsonObject;
 
 /**
- * Cedato JSON item.
+ *
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public final class RtJson {
+public class JsSupply extends SupWrap {
 
-    /**
-     * RESTful request.
-     */
-    private final Request request;
+    private final JsonObject json;
 
-    /**
-     * Public ctor.
-     * @param req Request
-     */
-    public RtJson(final Request req) {
-        this.request = req;
+    public JsSupply(
+        final Supply origin,
+        final JsonObject json
+    ) {
+        super(origin);
+        this.json = json;
     }
 
-    /**
-     * Fetch JSON object.
-     * @return JSON object
-     * @throws IOException If fails
-     */
-    public JsonObject fetch() throws IOException {
-        return this.request.fetch()
-                           .as(RestResponse.class)
-                           .assertStatus(HttpURLConnection.HTTP_OK)
-                           .as(JsonResponse.class)
-                           .json()
-                           .readObject();
+    @Override
+    public JsonObject json() {
+        return this.json;
     }
-
 }

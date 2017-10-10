@@ -22,48 +22,47 @@
  * SOFTWARE.
  */
 
-package com.github.smallcreep.cedato;
+package com.github.smallcreep.cedato.sup;
 
-import com.jcabi.http.Request;
-import com.jcabi.http.response.JsonResponse;
-import com.jcabi.http.response.RestResponse;
+import com.github.smallcreep.cedato.Supply;
 import java.io.IOException;
-import java.net.HttpURLConnection;
+import java.util.Iterator;
 import javax.json.JsonObject;
 
 /**
- * Cedato JSON item.
+ *
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public final class RtJson {
+public abstract class SupWrap implements Supply {
 
     /**
-     * RESTful request.
+     * Origin Supply.
      */
-    private final Request request;
+    private final Supply origin;
 
-    /**
-     * Public ctor.
-     * @param req Request
-     */
-    public RtJson(final Request req) {
-        this.request = req;
+    public SupWrap(final Supply origin) {
+        this.origin = origin;
     }
 
-    /**
-     * Fetch JSON object.
-     * @return JSON object
-     * @throws IOException If fails
-     */
-    public JsonObject fetch() throws IOException {
-        return this.request.fetch()
-                           .as(RestResponse.class)
-                           .assertStatus(HttpURLConnection.HTTP_OK)
-                           .as(JsonResponse.class)
-                           .json()
-                           .readObject();
+    @Override
+    public Supply group(final String group) {
+        return this.origin.group(group);
     }
 
+    @Override
+    public Supply range(final String start, final String end) {
+        return this.origin.range(start, end);
+    }
+
+    @Override
+    public JsonObject json() throws IOException {
+        return this.origin.json();
+    }
+
+    @Override
+    public Iterator<Supply> iterator() {
+        return this.origin.iterator();
+    }
 }

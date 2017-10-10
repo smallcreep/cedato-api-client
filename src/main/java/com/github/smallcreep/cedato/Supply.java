@@ -30,7 +30,7 @@ package com.github.smallcreep.cedato;
  * @version $Id$
  * @since 0.1
  */
-public interface Supply extends JsonReadable {
+public interface Supply extends JsonReadable, Iterable<Supply> {
 
     /**
      * Report supply group by.

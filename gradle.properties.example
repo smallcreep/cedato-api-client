@@ -27,3 +27,6 @@ cedatoService=
 cedatoSupplyId=
 OSSRH_USERNAME=
 OSSRH_PASSWORD=
+signing.keyId=
+signing.password=
+signing.secretKeyRingFile=

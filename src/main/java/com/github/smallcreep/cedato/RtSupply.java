@@ -24,8 +24,10 @@
 
 package com.github.smallcreep.cedato;
 
+import com.github.smallcreep.cedato.sup.SupIterator;
 import com.jcabi.http.Request;
 import java.io.IOException;
+import java.util.Iterator;
 import javax.json.JsonObject;
 
 /**
@@ -111,5 +113,10 @@ public final class RtSupply implements Supply {
     @Override
     public JsonObject json() throws IOException {
         return new RtJson(this.req).fetch();
+    }
+
+    @Override
+    public Iterator<Supply> iterator() {
+        return new SupIterator(this.req, this);
     }
 }
