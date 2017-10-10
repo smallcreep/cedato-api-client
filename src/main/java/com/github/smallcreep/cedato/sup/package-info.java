@@ -11,7 +11,7 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
- *  in all copies or substantial portions of the Software.
+ * in all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,39 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.smallcreep.cedato.sup;
-
-import com.github.smallcreep.cedato.Supply;
-import javax.json.JsonObject;
-
 /**
- * Supplies with wrap json.
+ * Supplies.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public final class JsSupply extends SupWrap {
-
-    /**
-     * Wrapped json.
-     */
-    private final JsonObject json;
-
-    /**
-     * Ctor.
-     * @param origin Origin Supply
-     * @param json Wrapped json
-     */
-    public JsSupply(
-        final Supply origin,
-        final JsonObject json
-    ) {
-        super(origin);
-        this.json = json;
-    }
-
-    @Override
-    public JsonObject json() {
-        return this.json;
-    }
-}
+package com.github.smallcreep.cedato.sup;
