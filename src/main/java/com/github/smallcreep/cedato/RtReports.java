@@ -27,27 +27,50 @@ package com.github.smallcreep.cedato;
 import com.jcabi.http.Request;
 
 /**
- * Entrypoint Cedato API.
+ * Simple Cedato reports.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public interface Cedato {
+public final class RtReports implements Reports {
 
     /**
-     * Base url Cedato.
+     * Basic request.
      */
-    String BASE_URL = "https://api.cedato.com";
+    private final Request req;
 
     /**
-     * Get origin request.
-     * @return Request
+     * Origin Cedato.
      */
-    Request request();
+    private final Cedato cedato;
 
     /**
-     * Get reports.
-     * @return Reports
+     * Ctor.
+     * @param cedato Origin Cedato
      */
-    Reports reports();
+    RtReports(final Cedato cedato) {
+        this(cedato, cedato.request());
+    }
+
+    /**
+     * Ctor.
+     * @param cedato Origin Cedato
+     * @param req Basic request
+     */
+    RtReports(final Cedato cedato, final Request req) {
+        this.cedato = cedato;
+        this.req = req.uri()
+                      .path("/reports")
+                      .back();
+    }
+
+    @Override
+    public Supplies supplies() {
+        return new RtSupplies(this, this.req);
+    }
+
+    @Override
+    public Cedato cedato() {
+        return this.cedato;
+    }
 }

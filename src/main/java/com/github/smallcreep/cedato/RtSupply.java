@@ -25,27 +25,21 @@
 package com.github.smallcreep.cedato;
 
 import com.jcabi.http.Request;
-import com.jcabi.http.request.ApacheRequest;
-import com.jcabi.manifests.Manifests;
-import javax.ws.rs.core.HttpHeaders;
+import java.io.IOException;
+import javax.json.JsonObject;
 
 /**
- * Cedato API entrypoint.
+ * Simple Cedato Reports Supply.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public final class RtCedato implements Cedato {
+public final class RtSupply implements Supply {
 
     /**
-     * Version of us.
+     * Parent Supplies.
      */
-    private static final String USER_AGENT = String.format(
-        "cedato-api-client %s %s %s",
-        Manifests.read("Cedato-Version"),
-        Manifests.read("Cedato-Build"),
-        Manifests.read("Cedato-Date")
-    );
+    private final Supplies parent;
 
     /**
      * Basic request.
@@ -53,46 +47,69 @@ public final class RtCedato implements Cedato {
     private final Request req;
 
     /**
-     * Ctor.
-     * @param token Cedato token
+     * Origin request.
      */
-    public RtCedato(final String token) {
-        this(Cedato.BASE_URL, token);
-    }
+    private final Request origin;
 
     /**
      * Ctor.
-     * @param url Base url Cedato
-     * @param token Cedato token
+     * @param parent Supplies parent
+     * @param req Parent request
+     * @param id Supply id
      */
-    public RtCedato(final String url, final String token) {
+    RtSupply(final Supplies parent, final Request req, final int id) {
         this(
-            new ApacheRequest(url)
-                .uri()
-                .path("/api")
-                .back()
-                .header(HttpHeaders.ACCEPT, "application/json")
-                .header(HttpHeaders.USER_AGENT, USER_AGENT)
-                .header("api-version", "1")
-                .header(HttpHeaders.AUTHORIZATION, token)
+            parent,
+            req,
+            req.uri()
+               .queryParam("supply_id", id)
+               .back()
         );
     }
 
     /**
      * Ctor.
+     * @param parent Supplies parent
+     * @param origin Parent request
      * @param req Basic request
      */
-    private RtCedato(final Request req) {
+    private RtSupply(
+        final Supplies parent,
+        final Request origin,
+        final Request req
+    ) {
+        this.parent = parent;
+        this.origin = origin;
         this.req = req;
     }
 
     @Override
-    public Request request() {
-        return this.req;
+    public Supply group(final String group) {
+        return new RtSupply(
+            this.parent,
+            this.origin,
+            this.req
+                .uri()
+                .queryParam("group_by", group)
+                .back()
+        );
     }
 
     @Override
-    public Reports reports() {
-        return new RtReports(this);
+    public Supply range(final String start, final String end) {
+        return new RtSupply(
+            this.parent,
+            this.origin,
+            this.req
+                .uri()
+                .queryParam("start", start)
+                .queryParam("end", end)
+                .back()
+        );
+    }
+
+    @Override
+    public JsonObject json() throws IOException {
+        return new RtJson(this.req).fetch();
     }
 }

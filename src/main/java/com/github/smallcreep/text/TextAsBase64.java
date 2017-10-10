@@ -26,10 +26,12 @@ package com.github.smallcreep.text;
 
 import java.io.IOException;
 import java.util.Base64;
+import lombok.EqualsAndHashCode;
 import org.cactoos.Bytes;
 import org.cactoos.Text;
-import org.cactoos.text.StringAsText;
-import org.cactoos.text.TextAsBytes;
+import org.cactoos.io.BytesOf;
+import org.cactoos.text.TextOf;
+import org.cactoos.text.UncheckedText;
 
 /**
  * Text as base64 string.
@@ -37,6 +39,7 @@ import org.cactoos.text.TextAsBytes;
  * @version $Id$
  * @since 0.1
  */
+@EqualsAndHashCode(of = "source")
 public final class TextAsBase64 implements Text {
 
     /**
@@ -49,7 +52,7 @@ public final class TextAsBase64 implements Text {
      * @param string Source string
      */
     public TextAsBase64(final String string) {
-        this(new StringAsText(string));
+        this(new TextOf(string));
     }
 
     /**
@@ -57,7 +60,7 @@ public final class TextAsBase64 implements Text {
      * @param text Source text
      */
     public TextAsBase64(final Text text) {
-        this(new TextAsBytes(text));
+        this(new BytesOf(text));
     }
 
     /**
@@ -74,5 +77,10 @@ public final class TextAsBase64 implements Text {
                      .encodeToString(
                          this.source.asBytes()
                      );
+    }
+
+    @Override
+    public int compareTo(final Text text) {
+        return new UncheckedText(this).compareTo(text);
     }
 }

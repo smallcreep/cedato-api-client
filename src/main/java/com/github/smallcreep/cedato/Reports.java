@@ -24,30 +24,23 @@
 
 package com.github.smallcreep.cedato;
 
-import com.jcabi.http.Request;
-
 /**
- * Entrypoint Cedato API.
+ * Cedato reports.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public interface Cedato {
+public interface Reports {
 
     /**
-     * Base url Cedato.
+     * Get supplies reports.
+     * @return Supplies
      */
-    String BASE_URL = "https://api.cedato.com";
+    Supplies supplies();
 
     /**
-     * Get origin request.
-     * @return Request
+     * Get parent Cedato.
+     * @return Cedato
      */
-    Request request();
-
-    /**
-     * Get reports.
-     * @return Reports
-     */
-    Reports reports();
+    Cedato cedato();
 }

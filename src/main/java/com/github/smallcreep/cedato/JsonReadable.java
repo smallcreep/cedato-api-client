@@ -24,30 +24,22 @@
 
 package com.github.smallcreep.cedato;
 
-import com.jcabi.http.Request;
+import java.io.IOException;
+import javax.json.JsonObject;
 
 /**
- * Entrypoint Cedato API.
+ * JSON readable.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public interface Cedato {
+public interface JsonReadable {
 
     /**
-     * Base url Cedato.
+     * Describe it in a JSON object.
+     *
+     * @return JSON object
+     * @throws IOException If there is any I/O problem
      */
-    String BASE_URL = "https://api.cedato.com";
-
-    /**
-     * Get origin request.
-     * @return Request
-     */
-    Request request();
-
-    /**
-     * Get reports.
-     * @return Reports
-     */
-    Reports reports();
+    JsonObject json() throws IOException;
 }

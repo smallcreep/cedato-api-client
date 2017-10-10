@@ -116,6 +116,18 @@ public interface Auth {
 
         @Override
         public Cedato cedato() throws IOException {
+            System.out.println(
+                new FormattedText(
+                    "Basic %s",
+                    new TextAsBase64(
+                        new FormattedText(
+                            "%s:%s",
+                            this.access,
+                            this.secret
+                        )
+                    ).asString()
+                ).asString()
+            );
             final JsonObject auth = new RtJson(
                 this.req
                     .header(HttpHeaders.ACCEPT, "application/json")
@@ -124,6 +136,10 @@ public interface Auth {
                     .path("/api/token")
                     .back()
                     .method(Request.POST)
+                    .header(
+                        HttpHeaders.CONTENT_TYPE,
+                        "application/x-www-form-urlencoded"
+                    )
                     .header(
                         HttpHeaders.AUTHORIZATION,
                         new FormattedText(
@@ -134,10 +150,13 @@ public interface Auth {
                                     this.access,
                                     this.secret
                                 )
-                            )
+                            ).asString()
                         ).asString()
                     )
-            ).fetch();
+                    .body()
+                    .formParam("grant_type", "client_credentials")
+                    .back()
+            ).fetch().getJsonObject("data");
             return new RtCedato(
                 new FormattedText(
                     "%s %s",

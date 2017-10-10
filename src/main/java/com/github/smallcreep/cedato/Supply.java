@@ -24,30 +24,27 @@
 
 package com.github.smallcreep.cedato;
 
-import com.jcabi.http.Request;
-
 /**
- * Entrypoint Cedato API.
+ * Cedato Reports Supply.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public interface Cedato {
+public interface Supply extends JsonReadable {
 
     /**
-     * Base url Cedato.
+     * Report supply group by.
+     * @param group Group by
+     * @return Report Supply
      */
-    String BASE_URL = "https://api.cedato.com";
+    Supply group(String group);
 
     /**
-     * Get origin request.
-     * @return Request
+     * Set time range.
+     * @param start Start time
+     * @param end End time
+     * @return Report Supply
      */
-    Request request();
+    Supply range(String start, String end);
 
-    /**
-     * Get reports.
-     * @return Reports
-     */
-    Reports reports();
 }

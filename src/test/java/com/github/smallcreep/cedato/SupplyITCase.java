@@ -24,30 +24,48 @@
 
 package com.github.smallcreep.cedato;
 
-import com.jcabi.http.Request;
+import javax.json.JsonObject;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 
 /**
- * Entrypoint Cedato API.
+ * Integration Test Case for {@link RtSupply}.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public interface Cedato {
+public final class SupplyITCase {
 
     /**
-     * Base url Cedato.
+     * Check supply return correct json.
+     * @throws Exception If fails
+     * @checkstyle MagicNumberCheck (50 lines)
      */
-    String BASE_URL = "https://api.cedato.com";
-
-    /**
-     * Get origin request.
-     * @return Request
-     */
-    Request request();
-
-    /**
-     * Get reports.
-     * @return Reports
-     */
-    Reports reports();
+    @Test
+    public void supplyReturn() throws Exception {
+        final JsonObject json = new Auth.Simple(
+            System.getProperty("failsafe.cedato.service"),
+            System.getProperty("failsafe.cedato.secret")
+        ).cedato()
+            .reports()
+            .supplies()
+            .extended()
+            .supply(
+                Integer.parseInt(
+                    System.getProperty("failsafe.cedato.supplyId")
+                )
+            )
+            .range("1507536000", "1507539599")
+            .json();
+        MatcherAssert.assertThat(
+            json.getJsonObject("data")
+                .getJsonArray("supplies")
+                .getJsonObject(0)
+                .getString("supply_name"),
+            CoreMatchers.equalTo(
+                System.getProperty("failsafe.cedato.supplyName")
+            )
+        );
+    }
 }

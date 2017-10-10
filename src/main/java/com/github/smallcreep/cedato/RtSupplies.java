@@ -27,27 +27,78 @@ package com.github.smallcreep.cedato;
 import com.jcabi.http.Request;
 
 /**
- * Entrypoint Cedato API.
+ * Simple Cedato Reports Supplies.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public interface Cedato {
+public final class RtSupplies implements Supplies {
 
     /**
-     * Base url Cedato.
+     * Parent reports.
      */
-    String BASE_URL = "https://api.cedato.com";
+    private final Reports reports;
 
     /**
-     * Get origin request.
-     * @return Request
+     * Basic request.
      */
-    Request request();
+    private final Request req;
 
     /**
-     * Get reports.
-     * @return Reports
+     * Origin request.
      */
-    Reports reports();
+    private final Request origin;
+
+    /**
+     * Ctor.
+     * @param reports Parent reports
+     * @param req Origin request
+     */
+    RtSupplies(final Reports reports, final Request req) {
+        this(
+            reports,
+            req,
+            req.uri()
+               .path("/supplies")
+               .back()
+        );
+    }
+
+    /**
+     * Ctor.
+     * @param reports Parent reports
+     * @param origin Origin request
+     * @param req Basic request
+     */
+    private RtSupplies(
+        final Reports reports,
+        final Request origin,
+        final Request req
+    ) {
+        this.reports = reports;
+        this.req = req;
+        this.origin = origin;
+    }
+
+    @Override
+    public Supplies extended() {
+        return new RtSupplies(
+            this.reports,
+            this.origin,
+            this.req
+                .uri()
+                .path("/extended")
+                .back()
+        );
+    }
+
+    @Override
+    public Supply supply(final int id) {
+        return new RtSupply(this, this.req, id);
+    }
+
+    @Override
+    public Reports reports() {
+        return new RtReports(this.reports.cedato(), this.origin);
+    }
 }
