@@ -22,57 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.smallcreep.text;
-
-import java.io.IOException;
-import java.util.Base64;
-import org.cactoos.Bytes;
-import org.cactoos.Text;
-import org.cactoos.text.StringAsText;
-import org.cactoos.text.TextAsBytes;
-
 /**
- * Text as base64 string.
+ * Cedato test-cases.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public final class TextAsBase64 implements Text {
-
-    /**
-     * Source bytes.
-     */
-    private final Bytes source;
-
-    /**
-     * Ctor.
-     * @param string Source string
-     */
-    public TextAsBase64(final String string) {
-        this(new StringAsText(string));
-    }
-
-    /**
-     * Ctor.
-     * @param text Source text
-     */
-    public TextAsBase64(final Text text) {
-        this(new TextAsBytes(text));
-    }
-
-    /**
-     * Ctor.
-     * @param source Source bytes
-     */
-    public TextAsBase64(final Bytes source) {
-        this.source = source;
-    }
-
-    @Override
-    public String asString() throws IOException {
-        return Base64.getEncoder()
-                     .encodeToString(
-                         this.source.asBytes()
-                     );
-    }
-}
+package com.github.smallcreep.cedato;

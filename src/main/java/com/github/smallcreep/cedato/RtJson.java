@@ -22,57 +22,48 @@
  * SOFTWARE.
  */
 
-package com.github.smallcreep.text;
+package com.github.smallcreep.cedato;
 
+import com.jcabi.http.Request;
+import com.jcabi.http.response.JsonResponse;
+import com.jcabi.http.response.RestResponse;
 import java.io.IOException;
-import java.util.Base64;
-import org.cactoos.Bytes;
-import org.cactoos.Text;
-import org.cactoos.text.StringAsText;
-import org.cactoos.text.TextAsBytes;
+import java.net.HttpURLConnection;
+import javax.json.JsonObject;
 
 /**
- * Text as base64 string.
+ * Cedato JSON item.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public final class TextAsBase64 implements Text {
+public final class RtJson {
 
     /**
-     * Source bytes.
+     * RESTful request.
      */
-    private final Bytes source;
+    private final Request request;
 
     /**
-     * Ctor.
-     * @param string Source string
+     * Public ctor.
+     * @param req Request
      */
-    public TextAsBase64(final String string) {
-        this(new StringAsText(string));
+    RtJson(final Request req) {
+        this.request = req;
     }
 
     /**
-     * Ctor.
-     * @param text Source text
+     * Fetch JSON object.
+     * @return JSON object
+     * @throws IOException If fails
      */
-    public TextAsBase64(final Text text) {
-        this(new TextAsBytes(text));
+    public JsonObject fetch() throws IOException {
+        return this.request.fetch()
+                           .as(RestResponse.class)
+                           .assertStatus(HttpURLConnection.HTTP_OK)
+                           .as(JsonResponse.class)
+                           .json()
+                           .readObject();
     }
 
-    /**
-     * Ctor.
-     * @param source Source bytes
-     */
-    public TextAsBase64(final Bytes source) {
-        this.source = source;
-    }
-
-    @Override
-    public String asString() throws IOException {
-        return Base64.getEncoder()
-                     .encodeToString(
-                         this.source.asBytes()
-                     );
-    }
 }

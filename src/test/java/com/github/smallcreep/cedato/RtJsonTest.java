@@ -22,57 +22,41 @@
  * SOFTWARE.
  */
 
-package com.github.smallcreep.text;
+package com.github.smallcreep.cedato;
 
-import java.io.IOException;
-import java.util.Base64;
-import org.cactoos.Bytes;
-import org.cactoos.Text;
-import org.cactoos.text.StringAsText;
-import org.cactoos.text.TextAsBytes;
+import com.jcabi.http.mock.MkAnswer;
+import com.jcabi.http.mock.MkContainer;
+import com.jcabi.http.mock.MkGrizzlyContainer;
+import com.jcabi.http.request.ApacheRequest;
+import java.net.HttpURLConnection;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * Text as base64 string.
+ * Test Case for {@link RtJson}.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public final class TextAsBase64 implements Text {
+public final class RtJsonTest {
 
     /**
-     * Source bytes.
+     * RtJson can fetch HTTP request.
+     *
+     * @throws Exception if there is any problem
      */
-    private final Bytes source;
-
-    /**
-     * Ctor.
-     * @param string Source string
-     */
-    public TextAsBase64(final String string) {
-        this(new StringAsText(string));
+    @Test
+    public void sendHttpRequest() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(HttpURLConnection.HTTP_OK, "{\"body\":\"hi\"}")
+        ).start();
+        final RtJson json = new RtJson(new ApacheRequest(container.home()));
+        MatcherAssert.assertThat(
+            json.fetch().getString("body"),
+            Matchers.equalTo("hi")
+        );
+        container.stop();
     }
 
-    /**
-     * Ctor.
-     * @param text Source text
-     */
-    public TextAsBase64(final Text text) {
-        this(new TextAsBytes(text));
-    }
-
-    /**
-     * Ctor.
-     * @param source Source bytes
-     */
-    public TextAsBase64(final Bytes source) {
-        this.source = source;
-    }
-
-    @Override
-    public String asString() throws IOException {
-        return Base64.getEncoder()
-                     .encodeToString(
-                         this.source.asBytes()
-                     );
-    }
 }

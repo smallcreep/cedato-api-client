@@ -22,57 +22,73 @@
  * SOFTWARE.
  */
 
-package com.github.smallcreep.text;
+package com.github.smallcreep.cedato;
 
-import java.io.IOException;
-import java.util.Base64;
-import org.cactoos.Bytes;
-import org.cactoos.Text;
-import org.cactoos.text.StringAsText;
-import org.cactoos.text.TextAsBytes;
+import com.jcabi.http.Request;
+import com.jcabi.http.request.ApacheRequest;
+import com.jcabi.manifests.Manifests;
+import javax.ws.rs.core.HttpHeaders;
 
 /**
- * Text as base64 string.
+ * Cedato API entrypoint.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public final class TextAsBase64 implements Text {
+public final class RtCedato implements Cedato {
 
     /**
-     * Source bytes.
+     * Version of us.
      */
-    private final Bytes source;
+    private static final String USER_AGENT = String.format(
+        "cedato-api-client %s %s %s",
+        Manifests.read("Cedato-Version"),
+        Manifests.read("Cedato-Build"),
+        Manifests.read("Cedato-Date")
+    );
+
+    /**
+     * Basic request.
+     */
+    private final Request req;
 
     /**
      * Ctor.
-     * @param string Source string
+     * @param token Cedato token
      */
-    public TextAsBase64(final String string) {
-        this(new StringAsText(string));
+    public RtCedato(final String token) {
+        this(Cedato.BASE_URL, token);
     }
 
     /**
      * Ctor.
-     * @param text Source text
+     * @param url Base url Cedato
+     * @param token Cedato token
      */
-    public TextAsBase64(final Text text) {
-        this(new TextAsBytes(text));
+    public RtCedato(final String url, final String token) {
+        this(
+            new ApacheRequest(url)
+                .uri()
+                .path("/api")
+                .back()
+                .header(HttpHeaders.ACCEPT, "application/json")
+                .header(HttpHeaders.USER_AGENT, USER_AGENT)
+                .header("api-version", "1")
+                .header(HttpHeaders.AUTHORIZATION, token)
+        );
     }
 
     /**
      * Ctor.
-     * @param source Source bytes
+     * @param req Basic request
      */
-    public TextAsBase64(final Bytes source) {
-        this.source = source;
+    private RtCedato(final Request req) {
+        this.req = req;
     }
 
     @Override
-    public String asString() throws IOException {
-        return Base64.getEncoder()
-                     .encodeToString(
-                         this.source.asBytes()
-                     );
+    public Request request() {
+        return this.req;
     }
+
 }
