@@ -116,18 +116,6 @@ public interface Auth {
 
         @Override
         public Cedato cedato() throws IOException {
-            System.out.println(
-                new FormattedText(
-                    "Basic %s",
-                    new TextAsBase64(
-                        new FormattedText(
-                            "%s:%s",
-                            this.access,
-                            this.secret
-                        )
-                    ).asString()
-                ).asString()
-            );
             final JsonObject auth = new RtJson(
                 this.req
                     .header(HttpHeaders.ACCEPT, "application/json")
