@@ -25,3 +25,5 @@ cedatoSupplyName=
 cedatoSecret=
 cedatoService=
 cedatoSupplyId=
+OSSRH_USERNAME=
+OSSRH_PASSWORD=
