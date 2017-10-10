@@ -74,10 +74,10 @@ dependencies {
 
 test {
     systemProperties = [
-            "failsafe.cedato.service": (System.getProperty('cedatoService') ? System.getProperty('cedatoService') : System.getenv("service")),
-            "failsafe.cedato.secret" : (System.getProperty('cedatoSecret') ? System.getProperty('cedatoSecret') : System.getenv("secret")),
-            "failsafe.cedato.supplyId": (System.getProperty('cedatoSupplyId') ? System.getProperty('cedatoSupplyId') : System.getenv("supplyId")),
-            "failsafe.cedato.supplyName": (System.getProperty('cedatoSupplyName') ? System.getProperty('cedatoSupplyName') : System.getenv("supplyName")),
+            "failsafe.cedato.service": (getProperty('cedatoService') ? getProperty('cedatoService') : System.getenv("service")),
+            "failsafe.cedato.secret" : (getProperty('cedatoSecret') ? getProperty('cedatoSecret') : System.getenv("secret")),
+            "failsafe.cedato.supplyId": (getProperty('cedatoSupplyId') ? getProperty('cedatoSupplyId') : System.getenv("supplyId")),
+            "failsafe.cedato.supplyName": (getProperty('cedatoSupplyName') ? getProperty('cedatoSupplyName') : System.getenv("supplyName")),
     ]
 }
 
