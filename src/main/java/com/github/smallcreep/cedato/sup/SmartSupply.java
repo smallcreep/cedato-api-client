@@ -37,7 +37,7 @@ import javax.json.JsonObject;
  * @version $Id$
  * @since 0.1
  */
-public final class SmartSupply extends SupWrap {
+public final class SmartSupply extends AbstractSupWrap {
 
     /**
      * Origin Supply.
@@ -66,23 +66,47 @@ public final class SmartSupply extends SupWrap {
         }
         return this.json.get();
     }
-
-    public String id() throws IOException {
+    /**
+     * Get supply_id.
+     * @return Supply_id
+     * @throws IOException If fails
+     */
+    public String supplyId() throws IOException {
         return this.json().getString("supply_id");
     }
 
+    /**
+     * Get impressions.
+     * @return Impressions
+     * @throws IOException If fails
+     */
     public int impressions() throws IOException {
         return Integer.parseInt(this.json().getString("impressions"));
     }
 
+    /**
+     * Get ad_starts.
+     * @return Ad_starts
+     * @throws IOException If fails
+     */
     public int adStarts() throws IOException {
         return Integer.parseInt(this.json().getString("ad_starts"));
     }
 
+    /**
+     * Get hour.
+     * @return Hour
+     * @throws IOException If fails
+     */
     public int hour() throws IOException {
         return Integer.parseInt(this.json().getString("hour"));
     }
 
+    /**
+     * Get day.
+     * @return Day
+     * @throws IOException If fails
+     */
     public LocalDate day() throws IOException {
         return LocalDate.parse(
             this.json().getString("day"),
@@ -90,10 +114,20 @@ public final class SmartSupply extends SupWrap {
         );
     }
 
+    /**
+     * Get sub_id.
+     * @return Sub_id
+     * @throws IOException If fails
+     */
     public String subId() throws IOException {
         return this.json().getString("sub_id");
     }
 
+    /**
+     * Get revenue.
+     * @return Revenue
+     * @throws IOException If fails
+     */
     public double revenue() throws IOException {
         return Double.parseDouble(this.json().getString("revenue"));
     }

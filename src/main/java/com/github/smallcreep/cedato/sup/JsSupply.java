@@ -33,7 +33,7 @@ import javax.json.JsonObject;
  * @version $Id$
  * @since 0.1
  */
-public final class JsSupply extends SupWrap {
+public final class JsSupply extends AbstractSupWrap {
 
     /**
      * Wrapped json.

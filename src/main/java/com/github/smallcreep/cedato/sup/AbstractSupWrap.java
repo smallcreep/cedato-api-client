@@ -30,19 +30,23 @@ import java.util.Iterator;
 import javax.json.JsonObject;
 
 /**
- *
+ * Supply wrapper.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public abstract class SupWrap implements Supply {
+abstract class AbstractSupWrap implements Supply {
 
     /**
      * Origin Supply.
      */
     private final Supply origin;
 
-    public SupWrap(final Supply origin) {
+    /**
+     * Ctor.
+     * @param origin Origin Supply
+     */
+    AbstractSupWrap(final Supply origin) {
         this.origin = origin;
     }
 
