@@ -27,6 +27,8 @@ package com.github.smallcreep.cedato;
 import com.github.smallcreep.cedato.sup.SupIterator;
 import com.jcabi.http.Request;
 import java.io.IOException;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Iterator;
 import javax.json.JsonObject;
 
@@ -97,15 +99,26 @@ public final class RtSupply implements Supply {
         );
     }
 
+    // @checkstyle MagicNumberCheck (50 lines)
     @Override
-    public Supply range(final String start, final String end) {
+    public Supply range(final ZonedDateTime start, final ZonedDateTime end) {
         return new RtSupply(
             this.parent,
             this.origin,
             this.req
                 .uri()
-                .queryParam("start", start)
-                .queryParam("end", end)
+                .queryParam(
+                    "start",
+                    start.withZoneSameInstant(ZoneOffset.ofHours(-5))
+                         .toLocalDateTime()
+                         .toEpochSecond(ZoneOffset.UTC)
+                )
+                .queryParam(
+                    "end",
+                    end.withZoneSameInstant(ZoneOffset.ofHours(-5))
+                       .toLocalDateTime()
+                       .toEpochSecond(ZoneOffset.UTC)
+                )
                 .back()
         );
     }

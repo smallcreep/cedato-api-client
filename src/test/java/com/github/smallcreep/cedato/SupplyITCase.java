@@ -24,6 +24,8 @@
 
 package com.github.smallcreep.cedato;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import javax.json.JsonObject;
 import org.cactoos.iterable.LengthOf;
 import org.hamcrest.CoreMatchers;
@@ -53,11 +55,10 @@ public final class SupplyITCase {
             .supplies()
             .extended()
             .supply(
-                Integer.parseInt(
-                    System.getProperty("failsafe.cedato.supplyId")
+                 Integer.parseInt(
+                     System.getProperty("failsafe.cedato.supplyId")
                 )
             )
-            .range("1507536000", "1507539599")
             .json();
         MatcherAssert.assertThat(
             json.getJsonObject("data")
@@ -87,11 +88,16 @@ public final class SupplyITCase {
                     .supplies()
                     .extended()
                     .supply(
-                        Integer.parseInt(
-                            System.getProperty("failsafe.cedato.supplyId")
+                         Integer.parseInt(
+                             System.getProperty("failsafe.cedato.supplyId")
                         )
                     )
-                    .range("1507536000", "1507539599")
+                    .range(
+                        LocalDateTime.of(2017, 10, 9, 13, 0, 0)
+                                  .atZone(ZoneOffset.UTC),
+                        LocalDateTime.of(2017, 10, 9, 13, 59, 59)
+                                  .atZone(ZoneOffset.UTC)
+                    )
                     .group("player_demand_hour_subid")
             ).value(),
             CoreMatchers.equalTo(24284)

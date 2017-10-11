@@ -26,6 +26,7 @@ package com.github.smallcreep.cedato.sup;
 
 import com.github.smallcreep.cedato.Supply;
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.Iterator;
 import javax.json.JsonObject;
 
@@ -56,7 +57,7 @@ abstract class AbstractSupWrap implements Supply {
     }
 
     @Override
-    public Supply range(final String start, final String end) {
+    public Supply range(final ZonedDateTime start, final ZonedDateTime end) {
         return this.origin.range(start, end);
     }
 

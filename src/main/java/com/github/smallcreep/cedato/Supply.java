@@ -24,6 +24,8 @@
 
 package com.github.smallcreep.cedato;
 
+import java.time.ZonedDateTime;
+
 /**
  * Cedato Reports Supply.
  * @author Ilia Rogozhin (ilia.rogozhin@gmail.com)
@@ -45,6 +47,6 @@ public interface Supply extends JsonReadable, Iterable<Supply> {
      * @param end End time
      * @return Report Supply
      */
-    Supply range(String start, String end);
+    Supply range(ZonedDateTime start, ZonedDateTime end);
 
 }
