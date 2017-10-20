@@ -103,4 +103,37 @@ public final class SupplyITCase {
             CoreMatchers.equalTo(24284)
         );
     }
+
+    /**
+     * Check supply count.
+     * @throws Exception If fails
+     * @checkstyle MagicNumberCheck (50 lines)
+     */
+    @Test
+    public void supplyCount2() throws Exception {
+        MatcherAssert.assertThat(
+            new LengthOf(
+                new Auth.Simple(
+                    System.getProperty("failsafe.cedato.service"),
+                    System.getProperty("failsafe.cedato.secret")
+                ).cedato()
+                 .reports()
+                 .supplies()
+                 .extended()
+                 .supply(
+                     Integer.parseInt(
+                         System.getProperty("failsafe.cedato.supplyId")
+                     )
+                 )
+                 .range(
+                     LocalDateTime.of(2017, 10, 1, 1, 0, 0)
+                                  .atZone(ZoneOffset.UTC),
+                     LocalDateTime.of(2017, 10, 1, 1, 59, 59)
+                                  .atZone(ZoneOffset.UTC)
+                 )
+                 .group("player_hour_subid")
+            ).value(),
+            CoreMatchers.equalTo(594)
+        );
+    }
 }

@@ -108,17 +108,24 @@ public final class SupIterator implements Iterator<Supply> {
      *          Else if json hasn't navigation next link
      */
     private boolean navigationNext() {
+        final AtomicBoolean next = new AtomicBoolean(false);
+        final JsonObject data;
         try {
-            final JsonObject navigation = this.temp.get()
-                                                   .json()
-                                                   .getJsonObject("data")
-                                                   .getJsonObject("navigation");
-            return navigation != null
-                && navigation
-                .getString("next", null) != null;
+            data = this.temp.get()
+                            .json()
+                            .getJsonObject("data");
         } catch (final IOException error) {
             throw new UncheckedIOException(error);
         }
+        try {
+            final JsonObject navigation = data.getJsonObject("navigation");
+            next.set(navigation != null
+                && navigation
+                .getString("next", null) != null);
+        } catch (final ClassCastException exception) {
+            // Do nothing
+        }
+        return next.get();
     }
 
     @Override
