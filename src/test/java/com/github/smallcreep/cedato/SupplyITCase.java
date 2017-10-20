@@ -98,9 +98,9 @@ public final class SupplyITCase {
                         LocalDateTime.of(2017, 10, 9, 13, 59, 59)
                                   .atZone(ZoneOffset.UTC)
                     )
-                    .group("player_demand_hour_subid")
+                    .group("player_hour_subid")
             ).value(),
-            CoreMatchers.equalTo(24284)
+            CoreMatchers.equalTo(4478)
         );
     }
 
