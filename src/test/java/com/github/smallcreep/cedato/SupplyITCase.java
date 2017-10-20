@@ -110,7 +110,7 @@ public final class SupplyITCase {
      * @checkstyle MagicNumberCheck (50 lines)
      */
     @Test
-    public void supplyCount2() throws Exception {
+    public void countSmall() throws Exception {
         MatcherAssert.assertThat(
             new LengthOf(
                 new Auth.Simple(
