@@ -65,7 +65,7 @@ public final class SupIterator implements Iterator<Supply> {
     /**
      * Limit.
      */
-    private final Integer limit = 1000;
+    private final Integer limit;
 
     /**
      * Current index Supply in json.
@@ -81,8 +81,14 @@ public final class SupIterator implements Iterator<Supply> {
      * Ctor.
      * @param req Request origin
      * @param origin Supply origin
+     * @param limit Limit
      */
-    public SupIterator(final Request req, final Supply origin) {
+    public SupIterator(
+        final Request req,
+        final Supply origin,
+        final Integer limit
+    ) {
+        this.limit = limit;
         this.req = req.uri()
                       .queryParam("limit", this.limit)
                       .back();

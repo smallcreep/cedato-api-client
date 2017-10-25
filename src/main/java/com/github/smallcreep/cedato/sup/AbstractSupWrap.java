@@ -70,4 +70,9 @@ abstract class AbstractSupWrap implements Supply {
     public Iterator<Supply> iterator() {
         return this.origin.iterator();
     }
+
+    @Override
+    public Supply limit(final int limit) {
+        return this.origin.limit(limit);
+    }
 }

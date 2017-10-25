@@ -49,4 +49,12 @@ public interface Supply extends JsonReadable, Iterable<Supply> {
      */
     Supply range(ZonedDateTime start, ZonedDateTime end);
 
+    /**
+     * Set limit.
+     *
+     * @param limit Limit
+     * @return Report Supply
+     */
+    Supply limit(int limit);
+
 }

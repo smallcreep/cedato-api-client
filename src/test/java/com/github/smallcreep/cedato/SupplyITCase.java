@@ -50,13 +50,14 @@ public final class SupplyITCase {
         final JsonObject json = new Auth.Simple(
             System.getProperty("failsafe.cedato.service"),
             System.getProperty("failsafe.cedato.secret")
-        ).cedato()
+        )
+            .cedato()
             .reports()
             .supplies()
             .extended()
             .supply(
-                 Integer.parseInt(
-                     System.getProperty("failsafe.cedato.supplyId")
+                Integer.parseInt(
+                    System.getProperty("failsafe.cedato.supplyId")
                 )
             )
             .json();
@@ -83,22 +84,24 @@ public final class SupplyITCase {
                 new Auth.Simple(
                     System.getProperty("failsafe.cedato.service"),
                     System.getProperty("failsafe.cedato.secret")
-                ).cedato()
+                )
+                    .cedato()
                     .reports()
                     .supplies()
                     .extended()
                     .supply(
-                         Integer.parseInt(
-                             System.getProperty("failsafe.cedato.supplyId")
+                        Integer.parseInt(
+                            System.getProperty("failsafe.cedato.supplyId")
                         )
                     )
                     .range(
                         LocalDateTime.of(2017, 10, 9, 13, 0, 0)
-                                  .atZone(ZoneOffset.UTC),
+                                     .atZone(ZoneOffset.UTC),
                         LocalDateTime.of(2017, 10, 9, 13, 59, 59)
-                                  .atZone(ZoneOffset.UTC)
+                                     .atZone(ZoneOffset.UTC)
                     )
                     .group("player_hour_subid")
+                    .limit(10000)
             ).value(),
             CoreMatchers.equalTo(4478)
         );

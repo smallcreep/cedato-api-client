@@ -56,6 +56,11 @@ public final class RtSupply implements Supply {
     private final Request origin;
 
     /**
+     * Limit.
+     */
+    private final Integer limit;
+
+    /**
      * Ctor.
      * @param parent Supplies parent
      * @param req Parent request
@@ -76,15 +81,34 @@ public final class RtSupply implements Supply {
      * @param parent Supplies parent
      * @param origin Parent request
      * @param req Basic request
+     * @checkstyle MagicNumberCheck (7 lines)
      */
     private RtSupply(
         final Supplies parent,
         final Request origin,
         final Request req
     ) {
+        this(parent, origin, req, 1000);
+    }
+
+    /**
+     * Ctor.
+     * @param parent Supplies parent
+     * @param origin Parent request
+     * @param req Basic request
+     * @param limit Limit
+     * @checkstyle ParameterNumberCheck (6 lines)
+     */
+    private RtSupply(
+        final Supplies parent,
+        final Request origin,
+        final Request req,
+        final int limit
+    ) {
         this.parent = parent;
         this.origin = origin;
         this.req = req;
+        this.limit = limit;
     }
 
     @Override
@@ -95,7 +119,8 @@ public final class RtSupply implements Supply {
             this.req
                 .uri()
                 .queryParam("group_by", group)
-                .back()
+                .back(),
+            this.limit
         );
     }
 
@@ -119,7 +144,8 @@ public final class RtSupply implements Supply {
                        .toLocalDateTime()
                        .toEpochSecond(ZoneOffset.UTC)
                 )
-                .back()
+                .back(),
+            this.limit
         );
     }
 
@@ -130,6 +156,17 @@ public final class RtSupply implements Supply {
 
     @Override
     public Iterator<Supply> iterator() {
-        return new SupIterator(this.req, this);
+        return new SupIterator(this.req, this, this.limit);
+    }
+
+    // @checkstyle HiddenFieldCheck (2 lines)
+    @Override
+    public Supply limit(final int limit) {
+        return new RtSupply(
+            this.parent,
+            this.origin,
+            this.req,
+            limit
+        );
     }
 }
